@@ -1,746 +1,496 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CGdata — Consultora para pymes en Rosario. Reorganización de procesos, análisis de datos, desarrollo de software y flujos de trabajo. Orden que libera. Datos que potencian." />
-  <meta name="keywords" content="consultora pymes Rosario, análisis de datos, procesos, Power BI, software a medida, Santa Fe Argentina" />
-  <meta property="og:title" content="CGdata — Orden que libera. Datos que potencian." />
-  <meta property="og:description" content="Ayudamos a pequeños y medianos negocios a ordenar sus procesos, entender sus datos y usar la tecnología justa para crecer." />
-  <meta property="og:type" content="website" />
-  <title>CGdata — Orden que libera. Datos que potencian.</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Créditos Impulsar · AMR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --rojo: #C8102E;
+    --rojo-oscuro: #7A0C1E;
+    --rojo-suave: #FCEAEA;
+    --rojo-borde: #F0D3D3;
+    --texto: #241010;
+    --texto-suave: #7A6767;
+    --blanco: #FFFFFF;
+    --sombra: 0 8px 24px rgba(122, 12, 30, 0.08);
+    --radio: 16px;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--blanco);
+    color: var(--texto);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
 
-    :root {
-      --navy:     #0F2D4A;
-      --blue:     #1A5E8C;
-      --blue-m:   #2C80B4;
-      --blue-l:   #D6EAF5;
-      --blue-xl:  #EBF5FB;
-      --green:    #0E6655;
-      --green-m:  #1A9E7E;
-      --green-l:  #C8EDE4;
-      --green-xl: #EAF7F3;
-      --mint:     #5BC8A8;
-      --slate:    #F4F7FA;
-      --white:    #FFFFFF;
-      --text:     #1A2B3C;
-      --text-sec: #5A6A7A;
-      --border:   rgba(0,0,0,0.08);
-    }
+  /* ---------- Header ---------- */
+  header.top{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 28px clamp(20px, 5vw, 64px);
+    border-bottom: 1px solid var(--rojo-borde);
+    flex-wrap: wrap;
+  }
+  .marca{
+    display:flex;
+    align-items:center;
+    gap: 16px;
+  }
+  .sello{
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px dashed var(--rojo);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform: rotate(-8deg);
+    flex-shrink:0;
+    position:relative;
+  }
+  .sello::before{
+    content:"";
+    position:absolute;
+    inset: 6px;
+    border-radius:50%;
+    border: 1px solid var(--rojo);
+    opacity:.5;
+  }
+  .sello span{
+    font-family:'Sora', sans-serif;
+    font-weight:800;
+    font-size: 11px;
+    color: var(--rojo);
+    letter-spacing: 0.5px;
+  }
+  h1{
+    font-family:'Sora', sans-serif;
+    font-weight:800;
+    font-size: clamp(22px, 3vw, 30px);
+    margin:0;
+    line-height:1.1;
+  }
+  h1 .amr{ color: var(--rojo); }
+  .subtitulo{
+    margin: 4px 0 0;
+    color: var(--texto-suave);
+    font-size: 14px;
+  }
+  .estado{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--texto-suave);
+    background: var(--rojo-suave);
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+  .punto{
+    width:8px; height:8px; border-radius:50%;
+    background:#2E9E4C;
+    flex-shrink:0;
+  }
+  .punto.error{ background:#C8102E; }
+  .punto.cargando{ background:#D9A400; animation: pulso 1.2s infinite; }
+  @keyframes pulso{ 50%{ opacity:.3; } }
 
-    html { scroll-behavior: smooth; }
+  main{
+    padding: 40px clamp(20px, 5vw, 64px) 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      color: var(--text);
-      background: var(--slate);
-      line-height: 1.6;
-    }
+  /* ---------- Mensaje de error / config ---------- */
+  #mensaje-error{
+    display:none;
+    background: var(--rojo-suave);
+    border: 1px solid var(--rojo-borde);
+    border-radius: var(--radio);
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-size: 14px;
+    line-height:1.6;
+  }
+  #mensaje-error code{
+    background: var(--blanco);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-family:'IBM Plex Mono', monospace;
+  }
 
-    /* ── NAVBAR ── */
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.1rem 2.5rem;
-      background: var(--navy);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+  /* ---------- KPIs ---------- */
+  .kpis{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .kpi{
+    background: var(--blanco);
+    border: 1px solid var(--rojo-borde);
+    border-radius: var(--radio);
+    padding: 24px 26px;
+    box-shadow: var(--sombra);
+    position: relative;
+    overflow:hidden;
+  }
+  .kpi::after{
+    content:"";
+    position:absolute;
+    right:-30px; top:-30px;
+    width:90px; height:90px;
+    border-radius:50%;
+    background: var(--rojo-suave);
+    z-index:0;
+  }
+  .kpi *{ position:relative; z-index:1; }
+  .kpi .etiqueta{
+    font-size: 13px;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 10px;
+  }
+  .kpi .valor{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size: clamp(24px, 3vw, 34px);
+    color: var(--rojo-oscuro);
+  }
+  .kpi.principal{
+    background: var(--rojo);
+    border-color: var(--rojo);
+    color: var(--blanco);
+  }
+  .kpi.principal .etiqueta{ color: rgba(255,255,255,.8); }
+  .kpi.principal .valor{ color: var(--blanco); }
+  .kpi.principal::after{ background: rgba(255,255,255,.12); }
 
-    .logo {
-      font-family: 'Fraunces', serif;
-      font-size: 22px;
-      font-weight: 600;
-      color: white;
-      letter-spacing: -0.5px;
-      text-decoration: none;
-    }
-    .logo span { color: var(--mint); }
+  /* ---------- Paneles de gráficos ---------- */
+  .paneles{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .panel{
+    background: var(--blanco);
+    border: 1px solid var(--rojo-borde);
+    border-radius: var(--radio);
+    padding: 24px 26px 12px;
+    box-shadow: var(--sombra);
+  }
+  .panel.ancho{ grid-column: 1 / -1; }
+  .panel h2{
+    font-family:'Sora', sans-serif;
+    font-size: 16px;
+    font-weight:700;
+    margin: 0 0 4px;
+  }
+  .panel .desc{
+    font-size: 12.5px;
+    color: var(--texto-suave);
+    margin: 0 0 16px;
+  }
+  .panel .lienzo{
+    position: relative;
+    height: 260px;
+  }
+  .panel.ancho .lienzo{ height: 220px; }
 
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 14px;
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color .2s;
-    }
-    .nav-links a:hover { color: white; }
+  @media (max-width: 760px){
+    .paneles{ grid-template-columns: 1fr; }
+  }
 
-    .btn-wa {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: #25D366;
-      color: white;
-      border: none;
-      padding: .5rem 1.1rem;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      text-decoration: none;
-      transition: background .2s;
-    }
-    .btn-wa:hover { background: #1ebe5a; }
-    .btn-wa svg { width: 16px; height: 16px; fill: white; flex-shrink: 0; }
-
-    /* ── HERO ── */
-    .hero {
-      background: var(--navy);
-      padding: 5rem 2.5rem 0;
-      overflow: hidden;
-    }
-    .hero-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: flex-end;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.08);
-      border: 0.5px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.8);
-      font-size: 12px;
-      font-weight: 500;
-      padding: 5px 14px;
-      border-radius: 999px;
-      margin-bottom: 1.5rem;
-      letter-spacing: .3px;
-    }
-    .badge-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--mint);
-      flex-shrink: 0;
-    }
-
-    .hero h1 {
-      font-family: 'Fraunces', serif;
-      font-size: 52px;
-      font-weight: 600;
-      line-height: 1.12;
-      color: white;
-      margin-bottom: 1.25rem;
-    }
-    .hero h1 em { font-style: italic; color: var(--mint); }
-
-    .hero-sub {
-      font-size: 16px;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.75;
-      margin-bottom: 2rem;
-      max-width: 430px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding-bottom: 3.5rem;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--green-m);
-      color: white;
-      border: none;
-      padding: .75rem 1.6rem;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      text-decoration: none;
-      transition: background .2s, transform .15s;
-    }
-    .btn-primary:hover { background: var(--green); transform: translateY(-1px); }
-    .btn-primary svg { width: 16px; height: 16px; fill: white; flex-shrink: 0; }
-
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      background: transparent;
-      color: rgba(255,255,255,.85);
-      border: 1px solid rgba(255,255,255,.3);
-      padding: .75rem 1.6rem;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      text-decoration: none;
-      transition: border-color .2s, background .2s;
-    }
-    .btn-ghost:hover { border-color: rgba(255,255,255,.7); background: rgba(255,255,255,.06); }
-
-    /* Hero cards */
-    .hero-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding-bottom: 3.5rem;
-    }
-    .hcard {
-      background: rgba(255,255,255,0.06);
-      border: 0.5px solid rgba(255,255,255,0.12);
-      border-radius: 16px;
-      padding: 1.25rem 1.5rem;
-    }
-    .hcard-row { display: flex; align-items: center; gap: 12px; }
-    .hcard-icon {
-      width: 38px; height: 38px;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .ic-g { background: rgba(26,158,126,0.25); }
-    .ic-b { background: rgba(44,128,180,0.25); }
-    .hcard-title { font-size: 14px; font-weight: 500; color: white; margin-bottom: 2px; }
-    .hcard-sub   { font-size: 12px; color: rgba(255,255,255,.5); }
-    .hcard-num {
-      font-family: 'Fraunces', serif;
-      font-size: 28px; font-weight: 600;
-      color: var(--mint); line-height: 1;
-    }
-    .hcard-tiny { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,.35); }
-
-    /* ── BAND ── */
-    .band {
-      background: linear-gradient(135deg, #0E6655 0%, #1A5E8C 100%);
-      padding: 1.75rem 2.5rem;
-      text-align: center;
-    }
-    .band p {
-      font-family: 'Fraunces', serif;
-      font-size: 21px; font-weight: 400;
-      color: white; letter-spacing: .2px;
-    }
-    .band p em { font-style: italic; color: #A8E6D4; }
-
-    /* ── SECTIONS ── */
-    .sec {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 4.5rem 2.5rem;
-    }
-    .sec-label {
-      font-size: 11px; font-weight: 500;
-      color: var(--blue-m);
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      margin-bottom: .5rem;
-    }
-    .sec h2 {
-      font-family: 'Fraunces', serif;
-      font-size: 34px; font-weight: 600;
-      color: var(--text);
-      margin-bottom: .75rem; line-height: 1.2;
-    }
-    .sec-sub {
-      font-size: 15px; color: var(--text-sec);
-      max-width: 520px; line-height: 1.75;
-      margin-bottom: 2.5rem;
-    }
-
-    /* ── SERVICES ── */
-    .srv-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .srv-card {
-      background: var(--white);
-      border: 0.5px solid var(--border);
-      border-radius: 16px;
-      padding: 1.75rem;
-      position: relative;
-      overflow: hidden;
-      transition: border-color .2s, transform .2s;
-    }
-    .srv-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 3px; border-radius: 16px 16px 0 0;
-    }
-    .srv-card.c1::before { background: linear-gradient(90deg,#0E6655,#1A9E7E); }
-    .srv-card.c2::before { background: linear-gradient(90deg,#1A5E8C,#2C80B4); }
-    .srv-card.c3::before { background: linear-gradient(90deg,#0F2D4A,#1A5E8C); }
-    .srv-card.c4::before { background: linear-gradient(90deg,#0E6655,#1A5E8C); }
-    .srv-card:hover { border-color: var(--blue-m); transform: translateY(-2px); }
-
-    .srv-icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1rem;
-    }
-    .si-g { background: var(--green-xl); }
-    .si-b { background: var(--blue-xl); }
-    .si-n { background: #EEF2F7; }
-    .si-t { background: var(--green-l); }
-
-    .srv-card h3 {
-      font-family: 'Fraunces', serif;
-      font-size: 19px; font-weight: 600;
-      color: var(--text); margin-bottom: .5rem;
-    }
-    .srv-card p {
-      font-size: 14px; color: var(--text-sec);
-      line-height: 1.65; margin-bottom: 1rem;
-    }
-
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag {
-      font-size: 11px; font-weight: 500;
-      padding: 3px 10px; border-radius: 999px;
-    }
-    .tg { background: var(--green-l); color: #0E6655; }
-    .tb { background: var(--blue-l); color: #1A5E8C; }
-    .tn { background: #EEF2F7; color: #0F2D4A; }
-
-    /* ── STEPS ── */
-    .steps-bg { background: var(--navy); }
-    .steps-bg .sec-label { color: rgba(255,255,255,.5); }
-    .steps-bg .sec h2 { color: white; }
-    .steps-bg .sec-sub { color: rgba(255,255,255,.55); }
-
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 16px;
-    }
-    .step {
-      background: rgba(255,255,255,0.05);
-      border: 0.5px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
-      padding: 1.5rem;
-    }
-    .step-num {
-      font-family: 'Fraunces', serif;
-      font-size: 38px; font-weight: 600;
-      line-height: 1; margin-bottom: .75rem;
-      background: linear-gradient(135deg, var(--green-m), var(--blue-m));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .step h4 { font-size: 15px; font-weight: 500; color: white; margin-bottom: .4rem; }
-    .step p  { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.6; }
-
-    /* ── PARA QUIÉN ── */
-    .aud-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3.5rem;
-      align-items: center;
-    }
-    .aud-list {
-      list-style: none;
-      display: flex; flex-direction: column; gap: 14px;
-      margin-top: 1.5rem;
-    }
-    .aud-list li {
-      display: flex; align-items: flex-start; gap: 12px;
-      font-size: 15px; color: var(--text-sec); line-height: 1.55;
-    }
-    .chk {
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      background: var(--green-xl);
-      border: 1px solid var(--green-l);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 1px;
-    }
-
-    .quote-block {
-      background: var(--navy);
-      border-radius: 20px;
-      padding: 2.25rem;
-      position: relative; overflow: hidden;
-    }
-    .quote-block::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--green-m), var(--blue-m));
-    }
-    .quote-block blockquote {
-      font-family: 'Fraunces', serif;
-      font-size: 21px; font-weight: 400;
-      color: white; line-height: 1.55;
-      margin-bottom: 1.5rem; font-style: italic;
-    }
-    .quote-attr { font-size: 13px; color: rgba(255,255,255,.5); font-weight: 500; }
-
-    .btn-wa-quote {
-      display: inline-flex;
-      align-items: center; gap: 8px;
-      background: #25D366; color: white;
-      border: none; padding: .65rem 1.4rem;
-      border-radius: 999px;
-      font-size: 14px; font-weight: 500;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      text-decoration: none;
-      transition: background .2s;
-      margin-top: 1.25rem;
-    }
-    .btn-wa-quote:hover { background: #1ebe5a; }
-    .btn-wa-quote svg { width: 16px; height: 16px; fill: white; flex-shrink: 0; }
-
-    /* ── CTA FINAL ── */
-    .cta-wrap {
-      background: linear-gradient(135deg, #0E6655 0%, #0F2D4A 100%);
-      padding: 5rem 2.5rem;
-      text-align: center;
-    }
-    .cta-wrap h2 {
-      font-family: 'Fraunces', serif;
-      font-size: 38px; font-weight: 600;
-      color: white; margin-bottom: .75rem;
-    }
-    .cta-wrap p {
-      font-size: 16px; color: rgba(255,255,255,.7);
-      margin-bottom: 2rem;
-      max-width: 460px;
-      margin-left: auto; margin-right: auto;
-      line-height: 1.75;
-    }
-    .cta-btns { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-
-    .btn-wa-lg {
-      display: inline-flex;
-      align-items: center; gap: 8px;
-      background: #25D366; color: white;
-      border: none; padding: .85rem 2rem;
-      border-radius: 999px;
-      font-size: 15px; font-weight: 500;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      text-decoration: none;
-      transition: background .2s, transform .15s;
-    }
-    .btn-wa-lg:hover { background: #1ebe5a; transform: translateY(-1px); }
-    .btn-wa-lg svg { width: 18px; height: 18px; fill: white; flex-shrink: 0; }
-
-    .btn-outline-w {
-      display: inline-flex; align-items: center;
-      background: transparent; color: white;
-      border: 1px solid rgba(255,255,255,.35);
-      padding: .85rem 2rem; border-radius: 999px;
-      font-size: 15px; font-weight: 500;
-      cursor: pointer; font-family: 'DM Sans', sans-serif;
-      text-decoration: none;
-      transition: border-color .2s;
-    }
-    .btn-outline-w:hover { border-color: white; }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--navy);
-      padding: 1.75rem 2.5rem;
-      border-top: 0.5px solid rgba(255,255,255,0.08);
-    }
-    .foot-inner {
-      max-width: 1100px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .foot-logo {
-      font-family: 'Fraunces', serif;
-      font-size: 19px; font-weight: 600; color: white;
-      text-decoration: none;
-    }
-    .foot-logo span { color: var(--mint); }
-    footer p { font-size: 13px; color: rgba(255,255,255,.4); }
-    .foot-links { display: flex; gap: 1.5rem; list-style: none; }
-    .foot-links a {
-      font-size: 13px; color: rgba(255,255,255,.4);
-      text-decoration: none; transition: color .2s;
-    }
-    .foot-links a:hover { color: white; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .nav { padding: 1rem 1.25rem; }
-      .hero { padding: 3rem 1.25rem 0; }
-      .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
-      .hero h1 { font-size: 36px; }
-      .hero-cards { padding-bottom: 2.5rem; }
-      .hero-actions { padding-bottom: 2.5rem; }
-      .sec { padding: 3rem 1.25rem; }
-      .srv-grid { grid-template-columns: 1fr; }
-      .steps-grid { grid-template-columns: 1fr 1fr; }
-      .aud-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .foot-inner { flex-direction: column; gap: 1rem; text-align: center; }
-      .foot-links { justify-content: center; }
-      .cta-wrap { padding: 3.5rem 1.25rem; }
-      .cta-wrap h2 { font-size: 28px; }
-      .band p { font-size: 17px; }
-    }
-
-    @media (max-width: 480px) {
-      .steps-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  footer{
+    text-align:center;
+    font-size: 12px;
+    color: var(--texto-suave);
+    padding: 24px;
+  }
+</style>
 </head>
 <body>
 
-  <!-- ── NAVBAR ── -->
-  <nav class="nav">
-    <a href="#" class="logo">CG<span>data</span></a>
-    <ul class="nav-links">
-      <li><a href="#servicios">Servicios</a></li>
-      <li><a href="#metodologia">Metodología</a></li>
-      <li><a href="#paraquien">Para quién</a></li>
-    </ul>
-    <a class="btn-wa" href="https://wa.me/5493412690055?text=Hola%20CGdata%2C%20quiero%20saber%20m%C3%A1s%20sobre%20sus%20servicios" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      WhatsApp
-    </a>
-  </nav>
+<header class="top">
+  <div class="marca">
+    <div class="sello"><span>IMPULSAR</span></div>
+    <div>
+      <h1>Créditos Impulsar <span class="amr">· AMR</span></h1>
+      <p class="subtitulo">Panel de seguimiento de créditos otorgados</p>
+    </div>
+  </div>
+  <div class="estado" id="estado">
+    <span class="punto cargando" id="punto-estado"></span>
+    <span id="texto-estado">Cargando datos…</span>
+  </div>
+</header>
 
-  <!-- ── HERO ── -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div>
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          Consultora de inteligencia de negocios · Rosario, Argentina
-        </div>
-        <h1>Orden que <em>libera.</em><br>Datos que<br><em>potencian.</em></h1>
-        <p class="hero-sub">Ayudamos a pequeños y medianos negocios a ordenar sus procesos, entender sus datos y usar la tecnología justa para crecer sin complicarse.</p>
-        <div class="hero-actions">
-          <a class="btn-primary" href="https://wa.me/5493412690055?text=Hola%20CGdata%2C%20quiero%20una%20reuni%C3%B3n%20gratuita" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Reunión gratuita
-          </a>
-          <a class="btn-ghost" href="#servicios">Ver servicios</a>
-        </div>
-      </div>
-      <div class="hero-cards">
-        <div class="hcard">
-          <div class="hcard-row">
-            <div class="hcard-icon ic-g">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A9E7E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
-            </div>
-            <div>
-              <div class="hcard-title">Procesos ordenados</div>
-              <div class="hcard-sub">Mas orden, mejor trabajo dia a dia</div>
-            </div>
-          </div>
-        </div>
-        <div class="hcard">
-          <div class="hcard-row">
-            <div class="hcard-icon ic-b">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2C80B4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            </div>
-            <div>
-              <div class="hcard-title">Datos que informan</div>
-              <div class="hcard-sub">Decisiones con evidencia</div>
-            </div>
-          </div>
-        </div>
-        <div class="hcard">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <div class="hcard-title">Enfoque en emprendedores, pymes y cooperativas de trabajo</div>
-              <div class="hcard-sub">Rosario y toda la región - servicios especializados</div>
-            </div>
-            <br>
-      </div>
+<main>
+
+  <div id="mensaje-error"></div>
+
+  <section class="kpis" id="kpis">
+    <!-- Las tarjetas KPI se generan con JS -->
+  </section>
+
+  <section class="paneles">
+    <div class="panel">
+      <h2>Distribución por cuotas</h2>
+      <p class="desc">Cantidad de créditos según plan de pago elegido</p>
+      <div class="lienzo"><canvas id="grafico-cuotas"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>Destino del crédito</h2>
+      <p class="desc">Insumos / materia prima vs. herramientas / maquinaria</p>
+      <div class="lienzo"><canvas id="grafico-destino"></canvas></div>
+    </div>
+    <div class="panel ancho">
+      <h2>Créditos otorgados por mes</h2>
+      <p class="desc">Marzo a julio</p>
+      <div class="lienzo"><canvas id="grafico-meses"></canvas></div>
     </div>
   </section>
 
-  <!-- ── BAND ── -->
-  <div class="band">
-    <p>"Orden que <em>libera.</em> Datos que <em>potencian.</em>"</p>
-  </div>
+</main>
 
-  <!-- ── SERVICIOS ── -->
-  <div style="background:var(--slate);" id="servicios">
-    <div class="sec">
-      <div class="sec-label">Lo que hacemos</div>
-      <h2>Cuatro formas de ayudarte a crecer</h2>
-      <p class="sec-sub">No vendemos tecnología por tecnología. Entendemos tu negocio primero y proponemos soluciones que tu equipo puede adoptar de verdad.</p>
-      <div class="srv-grid">
+<footer>
+  Fuente de datos: Google Sheets · Actualización automática al cargar la página
+</footer>
 
-        <div class="srv-card c1">
-          <div class="srv-icon si-g">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E6655" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
-          </div>
-          <h3>Reorganización de procesos</h3>
-          <p>Mapeamos cómo funciona tu negocio hoy, identificamos los cuellos de botella y rediseñamos el flujo para que las cosas pasen más fácil y con menos fricción.</p>
-          <div class="tags">
-            <span class="tag tg">Diagnóstico</span>
-            <span class="tag tg">Mapeo</span>
-            <span class="tag tg">Optimización</span>
-          </div>
-        </div>
+<script>
+/* =========================================================================
+   CONFIGURACIÓN — Editá estas dos líneas con los datos de tu Google Sheet
+   ========================================================================= */
+const SHEET_ID   = "1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8";   // lo encontrás en la URL de tu hoja
+const SHEET_NAME = "https://docs.google.com/spreadsheets/d/1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8/edit?gid=2050782969#gid=2050782969";             // nombre exacto de la pestaña (tal como aparece abajo en Sheets)
 
-        <div class="srv-card c2">
-          <div class="srv-icon si-b">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A5E8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          </div>
-          <h3>Análisis de datos</h3>
-          <p>Transformamos los datos que ya tenés en información útil. Tableros claros, indicadores que importan y reportes que te ayudan a tomar mejores decisiones. No tenes datos? Te ayudamos a construirlos!</p>
-          <div class="tags">
-            <span class="tag tb">Dashboards</span>
-            <span class="tag tb">KPIs</span>
-            <span class="tag tb">Reportes</span>
-          </div>
-        </div>
+/* Nombres de columnas esperados en la hoja (deben coincidir, sin importar mayúsculas/acentos) */
+const COLUMNAS = {
+  cantidad:      "Cantidad de prestamos",
+  monto:         "Monto total de creditos",
+  c6:            "En 6 cuotas",
+  c12:           "En 12 cuotas",
+  c18:           "En 18 cuotas",
+  cOtras:        "Otras cuotas",
+  mMarzo:        "Creditos en MARZO",
+  mAbril:        "Creditos en ABRIL",
+  mMayo:         "Creditos en MAYO",
+  mJunio:        "Creditos en JUNIO",
+  mJulio:        "Creditos en JULIO",
+  insumos:       "Compra de insumos y/o materia prima",
+  herramientas:  "Compra o reparación de Herramientas o Maquinaria"
+};
 
-        <div class="srv-card c3">
-          <div class="srv-icon si-n">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F2D4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          </div>
-          <h3>Desarrollo y adaptación de software</h3>
-          <p>Creamos o adaptamos herramientas digitales a la medida de tu negocio. Sin sobrediseño ni complejidad innecesaria — lo que necesitás, exactamente como lo necesitás.</p>
-          <div class="tags">
-            <span class="tag tn">A medida</span>
-            <span class="tag tn">Automatización</span>
-            <span class="tag tn">Integraciones</span>
-          </div>
-        </div>
+const COLOR_ROJO = "#C8102E";
+const COLOR_ROJO_OSCURO = "#7A0C1E";
+const COLOR_ROJO_CLARO = "#F2A6B0";
+const COLOR_ROJO_SUAVE = "#FCEAEA";
 
-        <div class="srv-card c4">
-          <div class="srv-icon si-t">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E6655" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17.5 14v3.5m0 0v3.5m0-3.5H14m3.5 0H21"/></svg>
-          </div>
-          <h3>Flujos de trabajo</h3>
-          <p>Diseñamos y documentamos cómo deben fluir las tareas y la información dentro de tu equipo. Menos mensajes perdidos, más claridad para todos.</p>
-          <div class="tags">
-            <span class="tag tg">Diseño de flujos</span>
-            <span class="tag tg">Documentación</span>
-            <span class="tag tg">Equipos</span>
-          </div>
-        </div>
+/* =========================================================================
+   Utilidades
+   ========================================================================= */
+function normalizar(str){
+  return (str || "")
+    .toString()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // saca acentos
+    .trim()
+    .toLowerCase();
+}
 
-      </div>
+function formatoMoneda(n){
+  return new Intl.NumberFormat('es-AR', { style:'currency', currency:'ARS', maximumFractionDigits:0 }).format(n || 0);
+}
+function formatoNumero(n){
+  return new Intl.NumberFormat('es-AR').format(n || 0);
+}
+
+function setEstado(tipo, texto){
+  document.getElementById('punto-estado').className = 'punto ' + tipo;
+  document.getElementById('texto-estado').textContent = texto;
+}
+
+function mostrarError(html){
+  const el = document.getElementById('mensaje-error');
+  el.style.display = 'block';
+  el.innerHTML = html;
+}
+
+/* Suma si todos los valores no vacíos son numéricos; si no, cuenta celdas no vacías.
+   Esto hace que el dashboard funcione tanto si la hoja tiene una sola fila de
+   totales, como si tiene una fila por cada préstamo. */
+function agregarColumna(valores){
+  const noVacios = valores.filter(v => v !== null && v !== undefined && v !== "");
+  if(noVacios.length === 0) return 0;
+  const todosNumericos = noVacios.every(v => typeof v === 'number' || (!isNaN(parseFloat(v)) && isFinite(v)));
+  if(todosNumericos){
+    return noVacios.reduce((s,v) => s + (typeof v === 'number' ? v : parseFloat(v)), 0);
+  }
+  return noVacios.length;
+}
+
+/* =========================================================================
+   Carga de datos desde Google Sheets (API gviz, sin backend ni API key)
+   ========================================================================= */
+async function cargarDatos(){
+  if(SHEET_ID === "TU_SHEET_ID_AQUI"){
+    setEstado('error', 'Falta configurar la hoja');
+    mostrarError(`
+      <strong>Todavía no conectaste tu Google Sheet.</strong><br>
+      Abrí <code>index.html</code>, buscá la sección "CONFIGURACIÓN" al final del archivo
+      y reemplazá <code>SHEET_ID</code> por el ID de tu hoja (la parte de la URL entre
+      <code>/d/</code> y <code>/edit</code>) y <code>SHEET_NAME</code> por el nombre de la pestaña.
+      Recordá también publicar la hoja como "Cualquier persona con el enlace puede ver".
+    `);
+    return;
+  }
+
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+
+  try{
+    const resp = await fetch(url);
+    if(!resp.ok) throw new Error('No se pudo acceder a la hoja (código ' + resp.status + ')');
+    const texto = await resp.text();
+    const match = texto.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?\s*$/);
+    if(!match) throw new Error('La hoja no devolvió el formato esperado. ¿Está publicada como pública?');
+    const json = JSON.parse(match[1]);
+
+    const cols = json.table.cols.map(c => normalizar(c.label));
+    const filas = json.table.rows.map(r => r.c.map(celda => celda ? celda.v : null));
+
+    // Mapea cada columna esperada a su índice real en la hoja
+    const indices = {};
+    for(const clave in COLUMNAS){
+      const buscado = normalizar(COLUMNAS[clave]);
+      let idx = cols.indexOf(buscado);
+      if(idx === -1) idx = cols.findIndex(c => c.includes(buscado) || buscado.includes(c));
+      indices[clave] = idx;
+    }
+
+    const faltantes = Object.keys(indices).filter(k => indices[k] === -1);
+    if(faltantes.length > 0){
+      console.warn('Columnas no encontradas en la hoja:', faltantes.map(k => COLUMNAS[k]));
+    }
+
+    function columna(clave){
+      const idx = indices[clave];
+      if(idx === -1) return [];
+      return filas.map(f => f[idx]);
+    }
+
+    const datos = {};
+    for(const clave in COLUMNAS){
+      datos[clave] = agregarColumna(columna(clave));
+    }
+
+    renderizar(datos, filas.length);
+    setEstado('ok', 'Datos actualizados · ' + new Date().toLocaleString('es-AR'));
+
+  }catch(err){
+    console.error(err);
+    setEstado('error', 'Error al cargar datos');
+    mostrarError(`
+      <strong>No se pudieron cargar los datos de Google Sheets.</strong><br>
+      Motivo: ${err.message}<br><br>
+      Revisá que: (1) el <code>SHEET_ID</code> y <code>SHEET_NAME</code> en <code>index.html</code>
+      sean correctos, y (2) la hoja esté compartida como "Cualquier persona con el enlace puede ver"
+      (Archivo → Compartir → Publicar en la web, o Compartir → cualquier persona con el enlace).
+    `);
+  }
+}
+
+/* =========================================================================
+   Renderizado de KPIs y gráficos
+   ========================================================================= */
+function renderizar(d, cantidadFilas){
+  const promedio = d.cantidad > 0 ? d.monto / d.cantidad : 0;
+
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi principal">
+      <div class="etiqueta">Cantidad de préstamos</div>
+      <div class="valor">${formatoNumero(d.cantidad)}</div>
     </div>
-  </div>
-
-  <!-- ── METODOLOGÍA ── -->
-  <div class="steps-bg" id="metodologia">
-    <div class="sec">
-      <div class="sec-label">Metodología</div>
-      <h2>Cómo trabajamos con vos</h2>
-      <p class="sec-sub">Empezamos siempre escuchando. Cada negocio es diferente y no existe una solución única para todos.</p>
-      <div class="steps-grid">
-        <div class="step">
-          <div class="step-num">01</div>
-          <h4>Escuchamos</h4>
-          <p>Nos juntamos sin costo para entender tu negocio, tus dolores y lo que querés lograr.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">02</div>
-          <h4>Diagnosticamos</h4>
-          <p>Analizamos tus procesos y datos actuales para identificar dónde está la mayor oportunidad.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">03</div>
-          <h4>Proponemos</h4>
-          <p>Presentamos un plan concreto, con alcance, tiempos y costos claros. Sin letra chica.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">04</div>
-          <h4>Acompañamos</h4>
-          <p>Implementamos juntos y nos quedamos cerca hasta que los cambios estén funcionando.</p>
-        </div>
-      </div>
+    <div class="kpi">
+      <div class="etiqueta">Monto total de créditos</div>
+      <div class="valor">${formatoMoneda(d.monto)}</div>
     </div>
-  </div>
-
-  <!-- ── PARA QUIÉN ── -->
-  <div style="background:var(--slate);" id="paraquien">
-    <div class="sec">
-      <div class="aud-grid">
-        <div>
-          <div class="sec-label">Para quién</div>
-          <h2>Pensado para negocios como el tuyo</h2>
-          <p class="sec-sub">Trabajamos con dueños y equipos que quieren profesionalizar su gestión sin perder la esencia de lo que construyeron.</p>
-          <ul class="aud-list">
-            <li>
-              <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0E6655" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              Comercios y tiendas que quieren ordenar sus operaciones
-            </li>
-            <li>
-              <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0E6655" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              Empresas de servicios que necesitan sistematizar su trabajo
-            </li>
-            <li>
-              <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0E6655" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              Pymes con procesos que podrían automatizarse
-            </li>
-            <li>
-              <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0E6655" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              Equipos que toman decisiones con poca o confusa información
-            </li>
-            <li>
-              <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#0E6655" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              Negocios en crecimiento que necesitan estructura para escalar
-            </li>
-          </ul>
-        </div>
-        <div class="quote-block">
-          <blockquote>"El objetivo no es que uses más tecnología. Es que tengas más tiempo para hacer lo que realmente hace crecer tu negocio."</blockquote>
-          <p class="quote-attr">— CGdata, Rosario</p>
-          <a class="btn-wa-quote" href="https://wa.me/5493412690055?text=Hola%20CGdata%2C%20quiero%20saber%20m%C3%A1s%20sobre%20sus%20servicios" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Escribinos por WhatsApp
-          </a>
-        </div>
-      </div>
+    <div class="kpi">
+      <div class="etiqueta">Promedio por préstamo</div>
+      <div class="valor">${formatoMoneda(promedio)}</div>
     </div>
-  </div>
+  `;
 
-  <!-- ── CTA FINAL ── -->
-  <div class="cta-wrap">
-    <h2>¿Listo para ordenar tu negocio?</h2>
-    <p>La primera reunión es sin costo y sin compromiso. Contanos qué está pasando en tu empresa y vemos juntos cómo podemos ayudarte.</p>
-    <div class="cta-btns">
-      <a class="btn-wa-lg" href="https://wa.me/5493412690055?text=Hola%20CGdata%2C%20quiero%20una%20reuni%C3%B3n%20gratuita" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Reservar reunión gratuita
-      </a>
-      <a class="btn-outline-w" href="#servicios">Ver servicios</a>
-    </div>
-  </div>
+  const opcionesBase = {
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{ legend:{ display:false } },
+    scales:{
+      x:{ grid:{ display:false } },
+      y:{ beginAtZero:true, grid:{ color:'#F5E5E5' } }
+    }
+  };
 
-  <!-- ── FOOTER ── -->
-  <footer>
-    <div class="foot-inner">
-      <a href="#" class="foot-logo">CG<span>data</span></a>
-      <p>Rosario, Santa Fe · Argentina</p>
-      <ul class="foot-links">
-        <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#metodologia">Metodología</a></li>
-        <li><a href="https://wa.me/5493412690055" target="_blank" rel="noopener">Contacto</a></li>
-      </ul>
-    </div>
-  </footer>
+  new Chart(document.getElementById('grafico-cuotas'), {
+    type:'bar',
+    data:{
+      labels:['6 cuotas','12 cuotas','18 cuotas','Otras'],
+      datasets:[{
+        data:[d.c6, d.c12, d.c18, d.cOtras],
+        backgroundColor:[COLOR_ROJO, COLOR_ROJO_OSCURO, COLOR_ROJO, COLOR_ROJO_CLARO],
+        borderRadius:6,
+        maxBarThickness:48
+      }]
+    },
+    options: opcionesBase
+  });
+
+  new Chart(document.getElementById('grafico-destino'), {
+    type:'doughnut',
+    data:{
+      labels:['Insumos / materia prima','Herramientas / maquinaria'],
+      datasets:[{
+        data:[d.insumos, d.herramientas],
+        backgroundColor:[COLOR_ROJO, COLOR_ROJO_SUAVE],
+        borderColor: '#fff',
+        borderWidth: 3
+      }]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      cutout:'62%',
+      plugins:{ legend:{ position:'bottom', labels:{ font:{ family:'Inter', size:11.5 }, boxWidth:12, padding:14 } } }
+    }
+  });
+
+  new Chart(document.getElementById('grafico-meses'), {
+    type:'bar',
+    data:{
+      labels:['Marzo','Abril','Mayo','Junio','Julio'],
+      datasets:[{
+        data:[d.mMarzo, d.mAbril, d.mMayo, d.mJunio, d.mJulio],
+        backgroundColor: COLOR_ROJO,
+        borderRadius:6,
+        maxBarThickness:56
+      }]
+    },
+    options: opcionesBase
+  });
+}
+
+cargarDatos();
+</script>
 
 </body>
 </html>
