@@ -344,7 +344,7 @@ function agregarColumna(valores){
    Carga de datos desde Google Sheets (API gviz, sin backend ni API key)
    ========================================================================= */
 async function cargarDatos(){
-  if(SHEET_ID === "TU_SHEET_ID_AQUI"){
+  if(SHEET_ID === "1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8"){
     setEstado('error', 'Falta configurar la hoja');
     mostrarError(`
       <strong>Todavía no conectaste tu Google Sheet.</strong><br>
@@ -356,7 +356,7 @@ async function cargarDatos(){
     return;
   }
 
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+  const url = `https://docs.google.com/spreadsheets/d/${1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(https://docs.google.com/spreadsheets/d/1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8/edit?gid=2050782969#gid=2050782969)}`;
 
   try{
     const resp = await fetch(url);
@@ -403,7 +403,7 @@ async function cargarDatos(){
     mostrarError(`
       <strong>No se pudieron cargar los datos de Google Sheets.</strong><br>
       Motivo: ${err.message}<br><br>
-      Revisá que: (1) el <code>SHEET_ID</code> y <code>SHEET_NAME</code> en <code>index.html</code>
+      Revisá que: (1) el <code>1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8</code> y <code>https://docs.google.com/spreadsheets/d/1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8/edit?gid=2050782969#gid=2050782969</code> en <code>index.html</code>
       sean correctos, y (2) la hoja esté compartida como "Cualquier persona con el enlace puede ver"
       (Archivo → Compartir → Publicar en la web, o Compartir → cualquier persona con el enlace).
     `);
