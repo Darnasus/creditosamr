@@ -273,8 +273,8 @@
 /* =========================================================================
    CONFIGURACIÓN — Editá estas dos líneas con los datos de tu Google Sheet
    ========================================================================= */
-const SHEET_ID   = "1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8";   // lo encontrás en la URL de tu hoja
-const SHEET_NAME = "https://docs.google.com/spreadsheets/d/1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8/edit?gid=2050782969#gid=2050782969";             // nombre exacto de la pestaña (tal como aparece abajo en Sheets)
+const SHEET_ID  = "1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8";  // ID de tu hoja
+const SHEET_GID = "2050782969";                                    // ID de la pestaña (gid), sacado de tu URL
 
 /* Nombres de columnas esperados en la hoja (deben coincidir, sin importar mayúsculas/acentos) */
 const COLUMNAS = {
@@ -344,19 +344,19 @@ function agregarColumna(valores){
    Carga de datos desde Google Sheets (API gviz, sin backend ni API key)
    ========================================================================= */
 async function cargarDatos(){
-  if(SHEET_ID === "1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8"){
+  if(!SHEET_ID || !SHEET_GID){
     setEstado('error', 'Falta configurar la hoja');
     mostrarError(`
       <strong>Todavía no conectaste tu Google Sheet.</strong><br>
       Abrí <code>index.html</code>, buscá la sección "CONFIGURACIÓN" al final del archivo
-      y reemplazá <code>SHEET_ID</code> por el ID de tu hoja (la parte de la URL entre
-      <code>/d/</code> y <code>/edit</code>) y <code>SHEET_NAME</code> por el nombre de la pestaña.
-      Recordá también publicar la hoja como "Cualquier persona con el enlace puede ver".
+      y completá <code>SHEET_ID</code> (la parte de la URL entre <code>/d/</code> y <code>/edit</code>)
+      y <code>SHEET_GID</code> (el número que aparece después de <code>gid=</code> en la URL).
+      Recordá también compartir la hoja como "Cualquier persona con el enlace puede ver".
     `);
     return;
   }
 
-  const url = `https://docs.google.com/spreadsheets/d/${1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(https://docs.google.com/spreadsheets/d/1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8/edit?gid=2050782969#gid=2050782969)}`;
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
 
   try{
     const resp = await fetch(url);
@@ -403,7 +403,7 @@ async function cargarDatos(){
     mostrarError(`
       <strong>No se pudieron cargar los datos de Google Sheets.</strong><br>
       Motivo: ${err.message}<br><br>
-      Revisá que: (1) el <code>1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8</code> y <code>https://docs.google.com/spreadsheets/d/1Nfm2fTisV8KpVyhnav0B6NBF-UtZFn7nnxbKgn3FYw8/edit?gid=2050782969#gid=2050782969</code> en <code>index.html</code>
+      Revisá que: (1) el <code>SHEET_ID</code> y <code>SHEET_GID</code> en <code>index.html</code>
       sean correctos, y (2) la hoja esté compartida como "Cualquier persona con el enlace puede ver"
       (Archivo → Compartir → Publicar en la web, o Compartir → cualquier persona con el enlace).
     `);
